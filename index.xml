@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Science Portfolio on Benjamen Underwood</title>
+    <link>https://benjamenu.github.io/Ben_Portfolio/</link>
+    <description>Recent content in Data Science Portfolio on Benjamen Underwood</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 10 Dec 2020 11:00:59 -0400</lastBuildDate><atom:link href="https://benjamenu.github.io/Ben_Portfolio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project 2: This Project will classifie the different types of stars.</title>
+      <link>https://benjamenu.github.io/Ben_Portfolio/post/project-2/</link>
+      <pubDate>Thu, 10 Dec 2020 11:00:59 -0400</pubDate>
+      
+      <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-2/</guid>
+      <description>Star Type Classification Modules Used import warnings import numpy as np import pandas as pd import seaborn as sns import matplotlib.pyplot as plt from sklearn import tree from sklearn import metrics from sklearn.svm import SVC from sklearn.pipeline import Pipeline from sklearn.pipeline import make_pipeline from sklearn.tree import DecisionTreeClassifier from sklearn.preprocessing import StandardScaler from mlxtend.plotting import plot_decision_regions from sklearn.model_selection import train_test_split from sklearn.model_selection import GridSearchCV from sklearn.linear_model import LogisticRegression warnings.filterwarnings(&amp;#39;ignore&amp;#39;) Exploratory Data Analysis df = pd.</description>
+    </item>
+    
+    <item>
+      <title>Project 1: Pokemon Attack Linear Regression Model</title>
+      <link>https://benjamenu.github.io/Ben_Portfolio/post/project-1/</link>
+      <pubDate>Sat, 30 May 2020 10:58:08 -0400</pubDate>
+      
+      <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-1/</guid>
+      <description>Below is the first Machine Learning project i have ever attempted. This simple project was created using Octave. One of my friends gave me this dataset to practice my Machine Learning skills. This dataset contains 800 different pokemon from the various games throughout the years. What I have done is used the HP, Defense, Sp. Atk, Sp. Def, and Speed of the Pokemon as my features. The goal is to use those features to predict the Attack of the Pokemon.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://benjamenu.github.io/Ben_Portfolio/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://benjamenu.github.io/Ben_Portfolio/contact/</guid>
+      <description>   Plateform URL     Email: benjamenu@gmail.com   Linkedin: https://www.linkedin.com/in/benjamen-underwood-6309b1b8/   GitHub: https://github.com/benjamenu    </description>
+    </item>
+    
+  </channel>
+</rss>
