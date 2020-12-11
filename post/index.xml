@@ -8,12 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 02 Mar 2017 12:00:00 -0500</lastBuildDate><atom:link href="https://benjamenu.github.io/Ben_Portfolio/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Project 2: This Project will classifie the different types of stars.</title>
+      <title>Project 2: Star Classifier</title>
       <link>https://benjamenu.github.io/Ben_Portfolio/post/project-2/</link>
       <pubDate>Thu, 10 Dec 2020 11:00:59 -0400</pubDate>
       
       <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-2/</guid>
-      <description>Star Type Classification Modules Used import warnings import numpy as np import pandas as pd import seaborn as sns import matplotlib.pyplot as plt from sklearn import tree from sklearn import metrics from sklearn.svm import SVC from sklearn.pipeline import Pipeline from sklearn.pipeline import make_pipeline from sklearn.tree import DecisionTreeClassifier from sklearn.preprocessing import StandardScaler from mlxtend.plotting import plot_decision_regions from sklearn.model_selection import train_test_split from sklearn.model_selection import GridSearchCV from sklearn.linear_model import LogisticRegression warnings.filterwarnings(&amp;#39;ignore&amp;#39;) Exploratory Data Analysis df = pd.</description>
+      <description>Star Type Classification I have a &amp;ldquo;Star dataset to predict star types&amp;rdquo; data set (from kaggle: Deepraj Baidya: Kaggle Link
+In this dataset each row represents a specific star and the columns represent specific parameters about that star. This dataset has 7 columns and 240 rows.
+The goal of this project was to try and predict what kind of star it will be based off of certain parameters.
+Modules Used import warnings import numpy as np import pandas as pd import seaborn as sns import matplotlib.</description>
     </item>
     
     <item>
