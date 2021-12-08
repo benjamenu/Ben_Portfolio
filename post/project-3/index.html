@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Project 3: Audio Clustering using Non-Negative Matrix Factorization | Benjamen Underwood</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Audio Clustering">
+    <meta name="generator" content="Hugo 0.89.4" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="https://benjamenu.github.io/Ben_Portfolio/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Project 3: Audio Clustering using Non-Negative Matrix Factorization" />
+<meta property="og:description" content="Audio Clustering" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://benjamenu.github.io/Ben_Portfolio/post/project-3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-08T11:00:59-04:00" />
+<meta property="article:modified_time" content="2021-12-08T11:00:59-04:00" />
+
+<meta itemprop="name" content="Project 3: Audio Clustering using Non-Negative Matrix Factorization">
+<meta itemprop="description" content="Audio Clustering"><meta itemprop="datePublished" content="2021-12-08T11:00:59-04:00" />
+<meta itemprop="dateModified" content="2021-12-08T11:00:59-04:00" />
+<meta itemprop="wordCount" content="2869">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Project 3: Audio Clustering using Non-Negative Matrix Factorization"/>
+<meta name="twitter:description" content="Audio Clustering"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('https://benjamenu.github.io/Ben_Portfolio/images/project3/output_13_1.png');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://benjamenu.github.io/Ben_Portfolio/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Benjamen Underwood
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/post/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+<a href="https://www.linkedin.com/in/benjamen-underwood-6309b1b8/" target="_blank" class="link-transition linkedin link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+<a href="https://github.com/benjamenu" target="_blank" class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel="noopener" aria-label="follow on Github——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Project 3: Audio Clustering using Non-Negative Matrix Factorization</h1>
+          
+            <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+              Audio Clustering
+            </h2>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        PROJECTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://benjamenu.github.io/Ben_Portfolio/post/project-3/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://benjamenu.github.io/Ben_Portfolio/post/project-3/&amp;text=Project%203:%20Audio%20Clustering%20using%20Non-Negative%20Matrix%20Factorization" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://benjamenu.github.io/Ben_Portfolio/post/project-3/&amp;title=Project%203:%20Audio%20Clustering%20using%20Non-Negative%20Matrix%20Factorization" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Project 3: Audio Clustering using Non-Negative Matrix Factorization</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2021-12-08T11:00:59-04:00">December 8, 2021</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="visualizing-and-clustering-audio">Visualizing and Clustering Audio</h2>
+<p>By: Benjamen Underwood</p>
+<h3 id="learning-about-audio">Learning about Audio</h3>
+<p>Import libraries</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> librosa
+<span style="color:#f92672">import</span> librosa.display
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">import</span> IPython.display <span style="color:#66d9ef">as</span> ipd
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#f92672">import</span> soundfile <span style="color:#66d9ef">as</span> sf
+<span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+
+<span style="color:#f92672">from</span> jupyterthemes <span style="color:#f92672">import</span> jtplot
+jtplot<span style="color:#f92672">.</span>style()
+</code></pre></div><p>Throughout this entire notebook the Frame size will be 2048 and the hop length will be 512.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">FRAME_LENGTH <span style="color:#f92672">=</span> <span style="color:#ae81ff">2048</span>
+HOP_LENGTH <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</code></pre></div><p>To start processing audio, there is a first a mystery to unravel, which is what exactly is audio? At a basic level audio can be described as a Sine Wave traveling through free space.
+The formula for a sine wave can be given as $Asin(\omega t)$.</p>
+<ul>
+<li>Amplitude:A</li>
+<li>Time:t</li>
+<li>Frequence:$\omega$</li>
+</ul>
+<p>Below you can see an example of how a sine wave. As you can see from the plot below the sine wave goes through the origin of the graph.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">time <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0.1</span>)
+amplitude <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(time)
+plt<span style="color:#f92672">.</span>plot(time, amplitude)
+plt<span style="color:#f92672">.</span>axhline(y<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;w&#39;</span>)
+
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Sine wave&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Time&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Amplitude = sin(time)&#39;</span>)
+</code></pre></div><pre><code>Text(0, 0.5, 'Amplitude = sin(time)')
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_7_1.png" alt="png"></p>
+<p>However, most of the time our audio will not be that clean due to factors such as background noise. Below is an audio signal of a hive where piping from a crow can be heard in the background.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">crow_signal, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;./crow.wav&#39;</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>waveplot(crow_signal, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Amplitude&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Crow Piping&#39;</span>)
+</code></pre></div><pre><code>Text(0.5, 1.0, 'Crow Piping')
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_9_1.png" alt="png"></p>
+<p>I had to understand how to extract feautres from our Audio. Audio features can be classified in three different categories. The first category is Time-Domain features (Amplitude Envelope, Root-Mean Square Energy, and Zero Crossing Rate), the second category is Frequency-Domain (Band Energy Ratio, Spectral Centroid, and Spectral Flux), and the last caregory is Time-Frequency Representation (Spectrogram, Mel-Spectrogram, and Constant-Q Transform).</p>
+<h3 id="time-domain-features">Time-Domain Features</h3>
+<p>The first feature that I implemented for my learning process was the amplitude envelope. The amplitude envelope is the max amplitude value of all samples in a given frame. This can give a rough idea of the loudness of the audio sample. However, the amplitude envelope is sensitive to outliers. Amplitude Envelope can be used for onset detection and music genre classification. Below is code used to generate the amplitude envelope.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">amplitude_envelope</span>(signal, frame_size, hop_length):
+    amp_env <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(signal), hop_length):
+        current_frame <span style="color:#f92672">=</span> max(signal[i:i<span style="color:#f92672">+</span>frame_size])
+        amp_env<span style="color:#f92672">.</span>append(current_frame)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(amp_env)
+
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">10</span>))
+crow_ae <span style="color:#f92672">=</span> amplitude_envelope(crow_signal, FRAME_LENGTH, HOP_LENGTH)
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>waveplot(crow_signal, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+time <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>frames_to_time(range(len(crow_ae)))
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Amplitude&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Amplitude Envelope of Crow Piping&#39;</span>)
+plt<span style="color:#f92672">.</span>plot(time, crow_ae, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x1ae0ef7fac0&gt;]
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_13_1.png" alt="png"></p>
+<p>As you can from the graph of the audio signal above the red line represents the amplitude envelope, and it says at the top of the signal.</p>
+<p>The next feature that was implemented was the Root-Mean Square Energy (RMSE). RMSE is just the root-mean square of all the samples in the frame. This is also an indicator of loudness, but it is less sensitive to outliers. RMSE is mostly used for Audio Segmentation and Music Genre Classification. Below is the code for RMSE.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">RMSE</span>(signal, frame_length, hop_length):
+    rmse <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(signal), hop_length):
+        current_frame <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sqrt(sum(signal[i:i<span style="color:#f92672">+</span>frame_length] <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">/</span> frame_length)
+        rmse<span style="color:#f92672">.</span>append(current_frame)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(rmse)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">10</span>))
+crow_rmse <span style="color:#f92672">=</span> RMSE(crow_signal, FRAME_LENGTH, HOP_LENGTH)
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>waveplot(crow_signal, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+time <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>frames_to_time(range(len(crow_rmse)))
+plt<span style="color:#f92672">.</span>plot(time, crow_rmse, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Amplitude&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Root-Mean square energy of Crow in Background&#39;</span>)
+</code></pre></div><pre><code>Text(0.5, 1.0, 'Root-Mean square energy of Crow in Background')
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_16_1.png" alt="png"></p>
+<p>As you can see in the graph above the RMSE in red stays roughly in the middle of the audio signal.</p>
+<p>The last Time-Domain Feature I implemented was the Zero Crossing Rate (ZCR). The ZCR is very simple to understand. It&rsquo;s just the number of times the signal crosses the horizontal axis. Below is the code for ZCR.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">zcr</span>(signal, frame_length, hop_length):
+    zcr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>zero_crossing_rate(signal, frame_length, hop_length)[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(zcr)
+
+crow_zcr <span style="color:#f92672">=</span> zcr(crow_signal, FRAME_LENGTH, HOP_LENGTH)
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>plot(time, crow_zcr)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Zero Crossing Rate of Crow Piping&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Frequency&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Time in Seconds&#39;</span>)
+plt<span style="color:#f92672">.</span>ylim(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)
+</code></pre></div><pre><code>(0.0, 1.0)
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_19_1.png" alt="png"></p>
+<h3 id="spectrograms">Spectrograms</h3>
+<p>The only feature extraction method I used for Time-Frequency Representation was creating a Mel-Spectrogram. A spectrogram is&hellip; and a Mel-Spectrogram is&hellip;</p>
+<p>The next few spectrograms that you will see are the spectrograms and infromation that I gathered from the beehives. The first spectorgram is audio of the beehive and you can hear a crow piping in the background. The crow piping is between 1024 and 2048 HZ.</p>
+<h4 id="crow-piping">Crow Piping</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(crow_signal, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span>FRAME_LENGTH, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Crow Piping&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_24_1.png" alt="png"></p>
+<p>The next two spectrograms are just normal bee chatter. However, the first spectrogram is before a fan was added to the hive to help regulate the humidity. The second hive is after the fan was connected. You can see the frequency of the fan between 512 and 1024 HZ.</p>
+<h4 id="regular-bee-audio">Regular Bee Audio</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bee_audio, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;../Beemon/4-2/7-21/rpi4-2@2021-07-21@18-18-27.wav&#39;</span>)
+mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(bee_audio, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span>FRAME_LENGTH, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Regular Bee Audio&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_27_1.png" alt="png"></p>
+<h4 id="bee-audio-with-fan-connected">Bee Audio with Fan Connected</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fan_audio, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;../Beemon/4-2/8-19/rpi4-2@2021-08-19@09-00-36.wav&#39;</span>)
+
+mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(fan_audio, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Bee Audio with Fan Connected&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_29_1.png" alt="png"></p>
+<p>The next spectrogram you can see there was thunder in the background around the 40 second mark just above 0 HZ</p>
+<h4 id="thunder">Thunder</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">thunder, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;../Beemon/4-2/8-17/rpi4-2@2021-08-17@13-06-52.wav&#39;</span>)
+
+mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(thunder, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Thunder&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_32_1.png" alt="png"></p>
+<h4 id="weed-eater">Weed Eater</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">weed_eater, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;../Beemon/4-2/8-20/rpi4-2@2021-08-20@19-18-48.wav&#39;</span>)
+
+mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(weed_eater, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Weed Eater&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_34_1.png" alt="png"></p>
+<h4 id="fighter-jets">Fighter Jets</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">jets, sr <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>load(<span style="color:#e6db74">&#39;../Beemon/4-2/10-30/rpi4-2@2021-10-30@15-26-21.wav&#39;</span>)
+
+mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>feature<span style="color:#f92672">.</span>melspectrogram(jets, sr<span style="color:#f92672">=</span>sr, n_fft<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>, hop_length<span style="color:#f92672">=</span>HOP_LENGTH, n_mels<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+log_mel_spectrogram_swarm <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>power_to_db(mel_spectrogram_swarm)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">10</span>))
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(log_mel_spectrogram_swarm, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;time&#34;</span>, y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mel&#34;</span>, sr<span style="color:#f92672">=</span>sr)
+plt<span style="color:#f92672">.</span>colorbar(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%+2.f&#34;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Fighter Jets&#39;</span>)
+plt<span style="color:#f92672">.</span>show
+</code></pre></div><pre><code>&lt;function matplotlib.pyplot.show(*args, **kw)&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_36_1.png" alt="png"></p>
+<h2 id="non-negative-matrix-factorization">Non-negative Matrix Factorization</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">S <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>stft(jets)
+X, phase <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>magphase(S)
+n_components <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+components, activations <span style="color:#f92672">=</span> librosa<span style="color:#f92672">.</span>decompose<span style="color:#f92672">.</span>decompose(X, n_components<span style="color:#f92672">=</span>n_components, sort<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</code></pre></div><pre><code>C:\Users\benja\anaconda3\lib\site-packages\sklearn\decomposition\_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn(&quot;Maximum number of iterations %d reached. Increase it to&quot;
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>,<span style="color:#ae81ff">4</span>))
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>)
+plt<span style="color:#f92672">.</span>plot(components[:, <span style="color:#ae81ff">0</span>])
+plt<span style="color:#f92672">.</span>plot(activations[<span style="color:#ae81ff">0</span>, :])
+
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>)
+plt<span style="color:#f92672">.</span>plot(components[:, <span style="color:#ae81ff">1</span>])
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x1ae0e732eb0&gt;]
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_39_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>,<span style="color:#ae81ff">4</span>))
+
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>)
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(librosa<span style="color:#f92672">.</span>amplitude_to_db(np<span style="color:#f92672">.</span>abs(components), ref<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>max), y_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;log&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Component&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Frequency&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Components&#39;</span>)
+
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>)
+librosa<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>specshow(activations, x_axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;time&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Time&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Component&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Activations&#39;</span>)
+
+plt<span style="color:#f92672">.</span>tight_layout()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_40_0.png" alt="png"></p>
+<h2 id="clustering-cat--dog-audio-samples">Clustering Cat &amp; Dog Audio Samples</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#f92672">from</span> sklearn <span style="color:#f92672">import</span> metrics
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+<span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</code></pre></div><p>First step was to create an array, so that I can test how well the algorithm clusters the data and so that I have something to test against.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
+test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(<span style="color:#ae81ff">277</span>)
+i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#66d9ef">for</span> dirname, _, filenames <span style="color:#f92672">in</span> os<span style="color:#f92672">.</span>walk(<span style="color:#e6db74">&#39;cats_dogs/cats_dogs/&#39;</span>):
+    <span style="color:#66d9ef">for</span> filename <span style="color:#f92672">in</span> filenames:
+        <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;dog&#39;</span> <span style="color:#f92672">in</span> filename:
+            test[i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        i <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+test
+</code></pre></div><pre><code>array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1.])
+</code></pre>
+<p>One important thing to mention is that the code that I use to grab the wav files and then process that data is not included in this notebook. However, I will include that code in the zip file, so that it can be used or looked at. That python file was used to generate CSV&rsquo;s for all of the features.</p>
+<h3 id="cluster-using-zcr-feature">Cluster Using ZCR feature</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;zcr.csv&#39;</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#39;Unnamed: 0&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
+</code></pre></div><p>Below I converted ZCR data to two dimensions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>to_numpy()
+pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>)
+df_temp <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_temp
+</code></pre></div><pre><code>array([[ 5.75133170e-01, -1.18828548e-01],
+       [ 2.03272546e+00,  8.70427344e-01],
+       [-9.21802868e-01, -1.97360529e-01],
+       [ 1.29287715e+00,  1.56414533e-01],
+       [ 1.09595116e+00, -3.17261490e-02],
+       [ 1.26132030e+00, -3.36117703e-01],
+       [ 7.33129306e-01, -5.70629145e-01],
+       [ 6.91996665e-01, -2.11382122e-01],
+       [ 5.29045043e-01, -3.45888982e-01],
+       [-7.40692570e-01,  8.00212689e-02],
+       [-3.80253829e-01,  3.17838379e-01],
+       [ 6.13314614e-03, -2.37070081e-01],
+       [-8.72450089e-01, -1.03074261e-01],
+       [ 1.69345249e+00, -4.30410571e-01],
+       [-3.26530241e-01,  5.67260554e-01],
+       [ 2.70416448e-01,  1.59363404e-01],
+       [ 1.22731479e+00, -2.31828934e-01],
+       [ 1.00500042e+00,  1.13445380e-01],
+       [ 7.50585471e-01, -2.50105174e-01],
+       [ 3.01392042e-01,  4.55788050e-01],
+       [-7.68075560e-01,  7.15573884e-02],
+       [ 9.25771012e-02, -2.87688523e-01],
+       [-8.28847320e-01, -2.15960535e-02],
+       [-6.17197735e-01,  2.73685641e-01],
+       [ 2.41654336e-01,  1.07807031e+00],
+       [-3.11921347e-01,  2.94809456e-01],
+       [-8.85128805e-01, -1.69588620e-01],
+       [ 1.55061687e-01,  1.94971949e-01],
+       [ 2.14616871e+00, -1.71239152e+00],
+       [ 2.90552561e+00,  6.44259006e-01],
+       [ 2.51391572e+00,  6.55004599e-01],
+       [-4.92658278e-01,  2.55391059e-01],
+       [ 1.57412380e-01, -9.10988827e-02],
+       [-9.43223304e-01, -2.03874832e-01],
+       [-1.03311885e+00, -3.09135085e-01],
+       [ 2.34742694e+00, -2.49327818e-01],
+       [-1.01257134e+00, -2.89257232e-01],
+       [-1.01063308e+00, -2.96041516e-01],
+       [-1.00391808e+00, -2.95309198e-01],
+       [-7.73250608e-01, -1.32883190e-01],
+       [-9.79185785e-01, -2.62334631e-01],
+       [-9.38186148e-01, -1.86888619e-01],
+       [-9.56554984e-01, -2.40652042e-01],
+       [ 3.52853019e+00, -1.04888901e+00],
+       [-9.20132685e-01, -2.05031232e-01],
+       [-9.02670783e-01, -1.91235899e-01],
+       [-7.02628042e-01,  1.57164830e-01],
+       [ 9.76698123e-01,  1.49284647e-01],
+       [ 9.95036258e-01,  2.61331948e+00],
+       [ 9.07805827e-01, -1.65043227e-01],
+       [ 1.36699742e+00, -5.45835118e-01],
+       [ 1.47839247e+00, -6.12371213e-02],
+       [-5.97338874e-01,  4.22648789e-01],
+       [-7.41278166e-01,  1.53566069e-01],
+       [-6.93061930e-01,  2.18119257e-01],
+       [-8.43858945e-01,  7.13963537e-03],
+       [ 9.96704022e-01, -3.18630162e-01],
+       [ 7.62262446e-01,  3.06319243e-02],
+       [ 2.35582539e-01, -9.19021109e-02],
+       [-8.16189198e-01,  9.94633275e-03],
+       [-8.23892971e-01,  4.21410818e-02],
+       [-9.98789894e-01, -2.80419138e-01],
+       [-6.95357343e-01,  1.68156453e-01],
+       [ 3.56576085e-01, -3.73559969e-01],
+       [-8.83760524e-01, -2.98282236e-01],
+       [ 4.51379537e-01, -2.59783616e-01],
+       [-4.71563854e-01,  1.10340047e-01],
+       [-2.42878917e-01, -9.01682976e-01],
+       [ 1.07476186e-01, -2.78843437e-01],
+       [ 7.38807689e-01,  3.75009886e-01],
+       [ 6.81237228e-01, -2.33225210e-01],
+       [ 7.28603975e-01, -2.93353915e-01],
+       [ 8.40833227e-01, -4.30277169e-01],
+       [-8.03863839e-01,  3.49768376e-02],
+       [-9.15058522e-01, -1.75296288e-01],
+       [-9.00382558e-01, -1.59835126e-01],
+       [ 5.61200867e-01, -2.16243022e-01],
+       [-1.00004830e+00, -2.78952595e-01],
+       [ 4.27015915e-01, -3.21294545e-01],
+       [ 2.72217414e-01,  1.34721736e-01],
+       [ 2.40513053e-01,  7.50717800e-02],
+       [-8.26430685e-01,  3.66606786e-02],
+       [ 1.19512259e-02, -2.78180292e-01],
+       [-6.76937224e-01,  1.16203239e-01],
+       [-8.47424036e-01, -1.90753347e-02],
+       [ 8.83715668e-01, -3.50677753e-01],
+       [ 1.03055006e+00, -3.60642116e-01],
+       [ 5.96109413e-01, -2.99082022e-01],
+       [ 1.02568742e+00, -2.10046435e-01],
+       [ 1.99618183e+00, -2.38992895e-01],
+       [-7.73272420e-01,  9.80091534e-02],
+       [ 7.41959406e-02,  1.34699085e+00],
+       [ 1.48756374e-01,  2.51120978e-01],
+       [ 4.00214808e-01, -1.80459250e-01],
+       [ 1.52939381e-01, -4.95369123e-02],
+       [-3.07243380e-01, -2.36724506e-02],
+       [-6.14006155e-01,  7.97693530e-02],
+       [ 2.29454369e-01,  1.67784948e-01],
+       [-9.03919359e-01, -1.65607850e-01],
+       [ 7.31786621e-01, -7.41381848e-01],
+       [ 1.06952112e+00,  1.86048029e-01],
+       [ 1.78169734e-01, -3.76960002e-01],
+       [ 2.86770551e-02, -1.39320964e-01],
+       [-9.74899873e-02, -3.24349904e-01],
+       [ 1.88226213e+00, -5.25168650e-01],
+       [ 1.72116744e+00,  1.17883884e-01],
+       [ 1.37382313e+00, -1.09387933e-01],
+       [ 1.29460098e+00, -2.37908022e-01],
+       [ 9.60769710e-01, -7.84052228e-01],
+       [ 8.10092827e-01,  7.07254753e-01],
+       [ 1.43186415e+00, -2.32015708e-01],
+       [ 1.91799165e+00, -6.74983571e-01],
+       [-6.73136463e-01,  2.60509263e-01],
+       [-9.30325966e-01, -2.04439021e-01],
+       [-9.22813730e-01, -2.06269359e-01],
+       [-9.45525565e-01, -2.35301653e-01],
+       [-8.92112488e-01, -1.62788866e-01],
+       [ 2.05200027e+00, -3.65130664e-01],
+       [ 2.33165068e+00, -3.49847285e-01],
+       [ 2.49686453e+00, -2.26912972e-01],
+       [ 2.50025798e-02, -4.09631269e-01],
+       [-4.88657760e-01, -4.80155660e-01],
+       [ 6.98975864e-01,  5.01372473e-01],
+       [ 7.44920920e-01, -4.61887276e-02],
+       [ 4.54482467e-01, -1.52752873e-01],
+       [ 3.20217620e+00, -2.95014354e-01],
+       [ 2.36423849e+00,  1.44133277e+00],
+       [-4.23496107e-01,  6.49114620e-01],
+       [-9.39378405e-01, -2.25445255e-01],
+       [-8.14784636e-01,  2.38577659e-02],
+       [-7.91746677e-02, -2.41323819e-01],
+       [-1.28667468e-02,  5.86458788e-03],
+       [-9.76668009e-01, -2.41090372e-01],
+       [ 1.25906016e-01,  6.06557152e-01],
+       [ 7.53290628e-01, -1.69195093e-01],
+       [ 5.54400293e-01, -4.67114907e-01],
+       [-2.25686225e-01,  3.43034610e-01],
+       [-3.79859674e-01,  6.84545008e-01],
+       [-1.01005241e+00, -2.77753172e-01],
+       [-8.45939241e-01, -3.34929799e-02],
+       [ 6.34720618e-01, -5.73903594e-01],
+       [ 2.72471231e+00, -2.72245631e-01],
+       [-7.88085126e-01,  3.09725271e-02],
+       [ 1.27637526e+00,  1.73044798e-01],
+       [ 9.05264186e-01, -3.18031451e-01],
+       [ 9.79803176e-01, -2.88371119e-01],
+       [-7.91152879e-01,  4.77505672e-02],
+       [ 2.08244891e+00,  1.12052780e+00],
+       [-9.18596451e-01, -1.85116993e-01],
+       [-8.29671486e-01, -2.79850936e-02],
+       [ 2.49479831e+00,  9.56034405e-01],
+       [ 2.87090675e+00,  2.52075424e-01],
+       [ 2.26298521e+00,  4.23684958e-01],
+       [-9.48664742e-01, -2.42007013e-01],
+       [ 6.23877358e-01, -1.00812915e-01],
+       [-8.12052815e-01, -2.25277597e-02],
+       [-9.01600912e-01, -1.72063622e-01],
+       [-7.18105718e-01,  1.46243985e-01],
+       [ 1.09617497e+00, -1.04139557e-01],
+       [ 8.68173708e-01, -1.23578562e-01],
+       [ 8.09089180e-01, -1.47655513e-01],
+       [ 1.11435655e+00, -5.55456658e-02],
+       [ 1.38428271e+00, -4.01543753e-01],
+       [ 1.59535953e+00, -4.46511844e-02],
+       [ 4.70638035e-01, -4.15130632e-01],
+       [ 7.37472634e-01,  1.05000571e-01],
+       [-8.95178452e-01, -8.74519056e-02],
+       [-8.87888983e-01, -9.14269376e-02],
+       [-8.44724706e-01,  2.46470058e-03],
+       [-9.38563988e-01, -1.44799569e-01],
+       [-9.33384654e-01, -1.80631568e-01],
+       [ 8.60877053e-01,  2.33800331e-01],
+       [-7.12351566e-01,  1.94541035e-01],
+       [-5.23036600e-01,  7.79977713e-02],
+       [ 1.86558875e+00, -3.55094082e-01],
+       [ 4.16670982e+00,  1.04212006e+00],
+       [-9.02712615e-01, -2.65594281e-01],
+       [-6.60712698e-01, -1.64930441e-01],
+       [-5.29044289e-01, -1.01863873e-02],
+       [-9.34507887e-01, -1.63706419e-01],
+       [-2.69380712e-01,  6.28584642e-01],
+       [-8.55830740e-01, -4.95891720e-02],
+       [-5.81928107e-01,  1.90882162e-01],
+       [-4.14787930e-01,  4.48511254e-01],
+       [-4.14787930e-01,  4.48511254e-01],
+       [-7.90930177e-01,  6.02666941e-02],
+       [-7.53468261e-01,  1.28313764e-01],
+       [ 2.01937747e+00, -1.92517474e-02],
+       [-7.19601847e-01,  1.59369636e-01],
+       [ 7.59696560e-01, -3.49605046e-01],
+       [-1.84904082e-02,  2.49408983e-01],
+       [ 3.15080643e-01,  4.08686755e-01],
+       [-9.16185810e-01, -1.39505056e-01],
+       [ 3.38104333e-01, -8.13045213e-02],
+       [-4.01045775e-01,  1.29409240e-01],
+       [ 1.30292063e+00, -3.33554877e-01],
+       [ 5.13695507e-03,  1.74791411e-01],
+       [-9.49587508e-01, -1.77796139e-01],
+       [-6.61787408e-03, -5.10769583e-01],
+       [-2.64538512e-01,  2.89289502e-01],
+       [-6.24886635e-01,  3.33445783e-01],
+       [-7.33088478e-01,  1.57473493e-01],
+       [-7.94121367e-01,  6.58378132e-02],
+       [-8.30374185e-01,  1.43053413e-02],
+       [-6.93348699e-01,  2.02846176e-01],
+       [-7.07103619e-01,  1.84033103e-01],
+       [-8.24977068e-01,  1.52431255e-02],
+       [-3.85293701e-01,  2.12680050e-01],
+       [-3.92790558e-01,  2.65760464e-01],
+       [-7.28954293e-01,  1.51775351e-01],
+       [-8.66837029e-01, -4.61002175e-02],
+       [-1.27381758e-01,  3.31622042e-01],
+       [-9.14190723e-01, -1.37921193e-01],
+       [-8.72859097e-01, -6.32591911e-02],
+       [-8.50133389e-01, -2.98482691e-02],
+       [-8.07757423e-01,  3.57488569e-02],
+       [-6.59329680e-01,  2.38431745e-01],
+       [-6.75934931e-01,  1.89753921e-01],
+       [-3.82878779e-01,  3.14048942e-01],
+       [-7.06980617e-01,  1.06157429e-01],
+       [-7.15563880e-01,  1.67253300e-01],
+       [-8.09987456e-01,  3.25526146e-02],
+       [ 7.09575663e-01,  3.00530935e-01],
+       [-8.50241231e-01, -2.71456277e-02],
+       [-7.60520549e-01,  1.07955786e-01],
+       [-9.03844876e-01, -1.14528893e-01],
+       [-4.79367684e-01,  1.57658384e-01],
+       [-7.32582977e-01,  1.44371562e-01],
+       [-5.92483595e-01,  3.02581485e-01],
+       [-7.92984341e-01,  5.68828568e-02],
+       [-8.49605576e-01, -2.68141435e-02],
+       [-7.36313399e-01,  1.35304958e-01],
+       [-7.49757377e-01,  1.16664100e-01],
+       [ 5.46495711e-03,  3.68156023e-01],
+       [-8.57001062e-01, -3.08303461e-02],
+       [-7.88802991e-01,  6.69548503e-02],
+       [-7.42332846e-01,  1.32205894e-01],
+       [-6.43594137e-01,  2.85495759e-01],
+       [-7.56819500e-01,  1.14406615e-01],
+       [-7.07038887e-01,  1.86047759e-01],
+       [-8.21396463e-01,  2.32929083e-02],
+       [-8.83563929e-01, -7.89343413e-02],
+       [-5.35200769e-01,  2.86352735e-01],
+       [-6.94522232e-01,  1.86905359e-01],
+       [-5.78274869e-01,  3.70582767e-01],
+       [-6.60590752e-01,  2.54776564e-01],
+       [-4.57423506e-01,  2.68449706e-01],
+       [-7.28136789e-01,  1.50857535e-01],
+       [-8.73209960e-01, -5.81952186e-02],
+       [-9.11173222e-01, -1.35204629e-01],
+       [-8.30838857e-01,  2.61461877e-04],
+       [-8.97498677e-01, -1.11307392e-01],
+       [-8.45901930e-01, -2.92184204e-02],
+       [-6.92342018e-01,  1.84981500e-01],
+       [-5.77595283e-01,  3.36515435e-01],
+       [-9.26345243e-01, -2.17082907e-01],
+       [-7.84682010e-01,  7.75566353e-02],
+       [-8.01674074e-01,  5.14134785e-02],
+       [-7.81591278e-01,  7.30164126e-02],
+       [-8.41128399e-01, -1.05232177e-02],
+       [-8.53760121e-01, -3.35225530e-02],
+       [-6.91950844e-01,  1.75088575e-01],
+       [-8.95468198e-01, -1.03542318e-01],
+       [-9.03931634e-01, -1.14096124e-01],
+       [-9.06950591e-01, -1.25437233e-01],
+       [-9.49863689e-01, -1.99187472e-01],
+       [-9.09944250e-01, -1.30581131e-01],
+       [ 7.98265004e-01, -1.85605858e-01],
+       [ 9.59103539e-01, -4.58905330e-01],
+       [ 8.10345616e-01,  1.10233199e-02],
+       [ 3.27113338e-01,  2.65071751e-01],
+       [ 8.49570606e-01,  9.42785551e-01],
+       [-8.72901226e-01, -6.27279792e-02],
+       [-1.17671850e-01, -3.55698079e-01],
+       [ 4.49464408e-01, -4.44032982e-01],
+       [-4.11988273e-01,  3.32634814e-01],
+       [-3.93517186e-02, -1.19046098e-01]])
+</code></pre>
+<p>The elbow method is used in clustering to find optimal number of clusters for the clustering algorithm. We should the elbow diverge at 2.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">distortions <span style="color:#f92672">=</span> []
+K <span style="color:#f92672">=</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>)
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> K:
+    kmeanModel <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span>k)
+    kmeanModel<span style="color:#f92672">.</span>fit(X)
+    distortions<span style="color:#f92672">.</span>append(kmeanModel<span style="color:#f92672">.</span>inertia_)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">8</span>))
+plt<span style="color:#f92672">.</span>plot(K, distortions, <span style="color:#e6db74">&#39;bx-&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;k&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Distortion&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;The Elbow Method showing the optimal k&#39;</span>)
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_52_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>fit(X)
+</code></pre></div><p>Below is a visual reprsentation of the clusters</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">label <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>fit_predict(df)
+u_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(label)
+centroids <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>cluster_centers_
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> u_labels:
+    plt<span style="color:#f92672">.</span>scatter(df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">0</span>] , df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">1</span>] , label <span style="color:#f92672">=</span> i)
+plt<span style="color:#f92672">.</span>scatter(centroids[:,<span style="color:#ae81ff">0</span>] , centroids[:,<span style="color:#ae81ff">1</span>] , s <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>)
+plt<span style="color:#f92672">.</span>legend()
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_55_0.png" alt="png"></p>
+<p>Below I compare the clusters that the algorithm produced to the array that I created early of the audio samples, and print out the similarity between the two arrays. As you can see there was only 5% similarity between the the labels I generated and the labels that the cluster generated.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+zeros <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+ones <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+error <span style="color:#f92672">=</span> metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 0: </span><span style="color:#e6db74">{</span>zeros<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) 
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 1: </span><span style="color:#e6db74">{</span>ones<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Should be a split of 164 and 113&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Similarity of Clusters: </span><span style="color:#e6db74">{</span>error <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#39;</span>)
+</code></pre></div><pre><code>Number of elements in Group 0: 188
+Number of elements in Group 1: 89
+Should be a split of 164 and 113
+Similarity of Clusters: 5.15%
+</code></pre>
+<h3 id="cluster-using-rms-feature">Cluster Using RMS feature</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;rms.csv&#39;</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#39;Unnamed: 0&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>to_numpy()
+pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>)
+df_temp <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">distortions <span style="color:#f92672">=</span> []
+K <span style="color:#f92672">=</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>)
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> K:
+    kmeanModel <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span>k)
+    kmeanModel<span style="color:#f92672">.</span>fit(X)
+    distortions<span style="color:#f92672">.</span>append(kmeanModel<span style="color:#f92672">.</span>inertia_)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">8</span>))
+plt<span style="color:#f92672">.</span>plot(K, distortions, <span style="color:#e6db74">&#39;bx-&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;k&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Distortion&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;The Elbow Method showing the optimal k&#39;</span>)
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_61_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>fit(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">label <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>fit_predict(df)
+u_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(label)
+centroids <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>cluster_centers_
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> u_labels:
+    plt<span style="color:#f92672">.</span>scatter(df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">0</span>] , df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">1</span>] , label <span style="color:#f92672">=</span> i)
+plt<span style="color:#f92672">.</span>scatter(centroids[:,<span style="color:#ae81ff">0</span>] , centroids[:,<span style="color:#ae81ff">1</span>] , s <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>)
+plt<span style="color:#f92672">.</span>legend()
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_63_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+zeros <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+ones <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+error <span style="color:#f92672">=</span> metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 0: </span><span style="color:#e6db74">{</span>zeros<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) 
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 1: </span><span style="color:#e6db74">{</span>ones<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Should be a split of 164 and 113&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Similarity of Clusters: </span><span style="color:#e6db74">{</span>error <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#39;</span>)
+</code></pre></div><pre><code>Number of elements in Group 0: 227
+Number of elements in Group 1: 50
+Should be a split of 164 and 113
+Similarity of Clusters: 0.83%
+</code></pre>
+<h3 id="cluster-using-spectrogram">Cluster Using Spectrogram</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;spec.csv&#39;</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#39;Unnamed: 0&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>to_numpy()
+pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>)
+df_temp <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">distortions <span style="color:#f92672">=</span> []
+K <span style="color:#f92672">=</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>)
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> K:
+    kmeanModel <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span>k)
+    kmeanModel<span style="color:#f92672">.</span>fit(X)
+    distortions<span style="color:#f92672">.</span>append(kmeanModel<span style="color:#f92672">.</span>inertia_)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">8</span>))
+plt<span style="color:#f92672">.</span>plot(K, distortions, <span style="color:#e6db74">&#39;bx-&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;k&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Distortion&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;The Elbow Method showing the optimal k&#39;</span>)
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_68_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>fit(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">label <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>fit_predict(df)
+<span style="color:#75715e"># centroids = centroids_pca</span>
+
+u_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(label)
+centroids <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>cluster_centers_
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> u_labels:
+    plt<span style="color:#f92672">.</span>scatter(df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">0</span>] , df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">1</span>] , label <span style="color:#f92672">=</span> i)
+plt<span style="color:#f92672">.</span>scatter(centroids[:,<span style="color:#ae81ff">0</span>] , centroids[:,<span style="color:#ae81ff">1</span>] , s <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>)
+plt<span style="color:#f92672">.</span>legend()
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_70_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">zeros <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+ones <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+error <span style="color:#f92672">=</span> metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 0: </span><span style="color:#e6db74">{</span>zeros<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) 
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 1: </span><span style="color:#e6db74">{</span>ones<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Should be a split of 164 and 113&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Similarity of Clusters: </span><span style="color:#e6db74">{</span>error <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#39;</span>)
+</code></pre></div><pre><code>Number of elements in Group 0: 112
+Number of elements in Group 1: 165
+Should be a split of 164 and 113
+Similarity of Clusters: 10.86%
+</code></pre>
+<h3 id="cluster-using-nmf">Cluster Using NMF</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;components.csv&#39;</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>drop(<span style="color:#e6db74">&#39;Unnamed: 0&#39;</span>, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>to_numpy()
+pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>)
+df_temp <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>fit(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>)
+centroids_pca <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(kmeans<span style="color:#f92672">.</span>cluster_centers_)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">label <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>fit_predict(df)
+u_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(label)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> u_labels:
+    plt<span style="color:#f92672">.</span>scatter(df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">0</span>] , df_temp[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">1</span>] , label <span style="color:#f92672">=</span> i)
+plt<span style="color:#f92672">.</span>legend()
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project3/output_77_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">zeros <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+ones <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>count_nonzero(kmeans<span style="color:#f92672">.</span>labels_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+error <span style="color:#f92672">=</span> metrics<span style="color:#f92672">.</span>adjusted_rand_score(test, kmeans<span style="color:#f92672">.</span>labels_)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 0: </span><span style="color:#e6db74">{</span>zeros<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) 
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of elements in Group 1: </span><span style="color:#e6db74">{</span>ones<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Should be a split of 164 and 113&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Similarity of Clusters: </span><span style="color:#e6db74">{</span>error <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#39;</span>)
+</code></pre></div><pre><code>Number of elements in Group 0: 171
+Number of elements in Group 1: 106
+Should be a split of 164 and 113
+Similarity of Clusters: 60.04%
+</code></pre>
+<p>As you can see from the value above we get a similarity of 60% when applying non-negative matrix factorization. When listening to the audio there are a lot samples that sound similar to a cat and dog. I only used k-means clustering, so there is a chance when applying a different clustering algorithm we could approve the Similarity of the Clusters.</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://benjamenu.github.io/Ben_Portfolio/" >
+    &copy;  Benjamen Underwood 2021 
+  </a>
+    <div>
+
+
+
+
+
+
+
+<a href="https://www.linkedin.com/in/benjamen-underwood-6309b1b8/" target="_blank" class="link-transition linkedin link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+<a href="https://github.com/benjamenu" target="_blank" class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel="noopener" aria-label="follow on Github——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="https://benjamenu.github.io/Ben_Portfolio/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

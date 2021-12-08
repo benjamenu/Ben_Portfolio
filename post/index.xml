@@ -8,6 +8,18 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 02 Mar 2017 12:00:00 -0500</lastBuildDate><atom:link href="https://benjamenu.github.io/Ben_Portfolio/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Project 3: Audio Clustering using Non-Negative Matrix Factorization</title>
+      <link>https://benjamenu.github.io/Ben_Portfolio/post/project-3/</link>
+      <pubDate>Wed, 08 Dec 2021 11:00:59 -0400</pubDate>
+      
+      <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-3/</guid>
+      <description>Visualizing and Clustering Audio By: Benjamen Underwood
+Learning about Audio Import libraries
+import librosa import librosa.display import matplotlib.pyplot as plt import IPython.display as ipd import numpy as np import soundfile as sf import pandas as pd from jupyterthemes import jtplot jtplot.style() Throughout this entire notebook the Frame size will be 2048 and the hop length will be 512.
+FRAME_LENGTH = 2048 HOP_LENGTH = 512 To start processing audio, there is a first a mystery to unravel, which is what exactly is audio?</description>
+    </item>
+    
+    <item>
       <title>Project 2: Star Classifier</title>
       <link>https://benjamenu.github.io/Ben_Portfolio/post/project-2/</link>
       <pubDate>Thu, 10 Dec 2020 11:00:59 -0400</pubDate>
