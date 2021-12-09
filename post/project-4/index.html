@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm | Benjamen Underwood</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="PCA &amp; Clustering from Scratch">
+    <meta name="generator" content="Hugo 0.89.4" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="https://benjamenu.github.io/Ben_Portfolio/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm" />
+<meta property="og:description" content="PCA &amp; Clustering from Scratch" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://benjamenu.github.io/Ben_Portfolio/post/project-4/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-08T11:00:59-04:00" />
+<meta property="article:modified_time" content="2021-12-08T11:00:59-04:00" />
+
+<meta itemprop="name" content="Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm">
+<meta itemprop="description" content="PCA &amp; Clustering from Scratch"><meta itemprop="datePublished" content="2021-12-08T11:00:59-04:00" />
+<meta itemprop="dateModified" content="2021-12-08T11:00:59-04:00" />
+<meta itemprop="wordCount" content="1664">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm"/>
+<meta name="twitter:description" content="PCA &amp; Clustering from Scratch"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('https://benjamenu.github.io/Ben_Portfolio/images/project4/output_23_2.png');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://benjamenu.github.io/Ben_Portfolio/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Benjamen Underwood
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="https://benjamenu.github.io/Ben_Portfolio/post/" title="Projects page">
+              Projects
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+<a href="https://www.linkedin.com/in/benjamen-underwood-6309b1b8/" target="_blank" class="link-transition linkedin link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+<a href="https://github.com/benjamenu" target="_blank" class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel="noopener" aria-label="follow on Github——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        
+          <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm</h1>
+          
+            <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+              PCA &amp; Clustering from Scratch
+            </h2>
+          
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        PROJECTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://benjamenu.github.io/Ben_Portfolio/post/project-4/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://benjamenu.github.io/Ben_Portfolio/post/project-4/&amp;text=Project%204:%20Implementing%20PCA%20from%20Scratch%20and%20testing%20by%20running%20PCA%20through%20K-Means%20Clustering%20Algorithm" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://benjamenu.github.io/Ben_Portfolio/post/project-4/&amp;title=Project%204:%20Implementing%20PCA%20from%20Scratch%20and%20testing%20by%20running%20PCA%20through%20K-Means%20Clustering%20Algorithm" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2021-12-08T11:00:59-04:00">December 8, 2021</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="pca-extension-for-dimensionality-reduction">PCA Extension for Dimensionality Reduction</h1>
+<h2 id="imports-needed">Imports needed</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sklearn.datasets <span style="color:#f92672">import</span> load_digits
+<span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+<span style="color:#f92672">from</span> jupyterthemes <span style="color:#f92672">import</span> jtplot
+jtplot<span style="color:#f92672">.</span>style()
+</code></pre></div><p>The dataset that was used for this extension comes from the sklearn load_digits package. Below you can visualize the different handwritten images in the package.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">digits <span style="color:#f92672">=</span> load_digits()
+plt<span style="color:#f92672">.</span>gray()
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">0</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">1</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">2</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">3</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">4</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">5</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">6</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">7</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">8</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>)
+
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+plt<span style="color:#f92672">.</span>matshow(digits<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">9</span>], fignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>)
+</code></pre></div><pre><code>&lt;matplotlib.image.AxesImage at 0x1d13a89b7f0&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_1.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_2.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_3.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_4.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_5.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_6.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_7.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_8.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_9.png" alt="png"></p>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_4_10.png" alt="png"></p>
+<pre><code>&lt;Figure size 216x360 with 0 Axes&gt;
+</code></pre>
+<p>As you can see below, the data is a matrix of 1797 rows and 64 columns. Because the matrix has 64 columns, this means that our data has 64 features. Each feature represents another dimension in our data. So if our data has 1-dimension, then we can represent our data by plotting the data on a number line. If the data had 2-dimensions we could visualize the data by plotting the data on a scatter plot. Since our data has 64-dimensions, we can not visualize the data to understand how well our machine learning algorithm&rsquo;s are performing. To get around this we perform a technique call PCA to perform dimensionality reduction on our data</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">digits<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>shape
+</code></pre></div><pre><code>(1797, 64)
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n <span style="color:#f92672">=</span> len(digits<span style="color:#f92672">.</span>images)
+data <span style="color:#f92672">=</span> digits<span style="color:#f92672">.</span>images<span style="color:#f92672">.</span>reshape((n, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>))
+data
+</code></pre></div><pre><code>array([[ 0.,  0.,  5., ...,  0.,  0.,  0.],
+       [ 0.,  0.,  0., ..., 10.,  0.,  0.],
+       [ 0.,  0.,  0., ..., 16.,  9.,  0.],
+       ...,
+       [ 0.,  0.,  1., ...,  6.,  0.,  0.],
+       [ 0.,  0.,  2., ..., 12.,  0.,  0.],
+       [ 0.,  0., 10., ..., 12.,  1.,  0.]])
+</code></pre>
+<h2 id="scale-the-data">Scale the Data</h2>
+<p>The first step is to scale our data. Using the standard scaling will scale the data by removing the mean and scaling to the unit variance. The standard score of a sample x is calculated by $z=(x-u)/s$. Where z is the output, x is the input, u is the mean, and s is the standard deviation. This is useful if you have data has different magnitudes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+X_scaled <span style="color:#f92672">=</span> StandardScaler()<span style="color:#f92672">.</span>fit_transform(data)
+X_scaled[:<span style="color:#ae81ff">5</span>]
+</code></pre></div><pre><code>array([[ 0.        , -0.33501649, -0.04308102,  0.27407152, -0.66447751,
+        -0.84412939, -0.40972392, -0.12502292, -0.05907756, -0.62400926,
+         0.4829745 ,  0.75962245, -0.05842586,  1.12772113,  0.87958306,
+        -0.13043338, -0.04462507,  0.11144272,  0.89588044, -0.86066632,
+        -1.14964846,  0.51547187,  1.90596347, -0.11422184, -0.03337973,
+         0.48648928,  0.46988512, -1.49990136, -1.61406277,  0.07639777,
+         1.54181413, -0.04723238,  0.        ,  0.76465553,  0.05263019,
+        -1.44763006, -1.73666443,  0.04361588,  1.43955804,  0.        ,
+        -0.06134367,  0.8105536 ,  0.63011714, -1.12245711, -1.06623158,
+         0.66096475,  0.81845076, -0.08874162, -0.03543326,  0.74211893,
+         1.15065212, -0.86867056,  0.11012973,  0.53761116, -0.75743581,
+        -0.20978513, -0.02359646, -0.29908135,  0.08671869,  0.20829258,
+        -0.36677122, -1.14664746, -0.5056698 , -0.19600752],
+       [ 0.        , -0.33501649, -1.09493684,  0.03864775,  0.26875116,
+        -0.13801953, -0.40972392, -0.12502292, -0.05907756, -0.62400926,
+        -1.91557297, -0.24630352,  1.19644995,  0.13619465, -0.51499146,
+        -0.13043338, -0.04462507, -0.72764628, -1.2133854 ,  1.38030848,
+         1.44186017, -0.29155283, -0.54880546, -0.11422184, -0.03337973,
+         1.44018517,  0.95451315,  1.22058589,  0.98740215, -0.94558832,
+        -0.62889588, -0.04723238,  0.        , -0.67237227, -1.05445197,
+         1.10556952,  0.96064411, -0.97870236, -0.82269451,  0.        ,
+        -0.06134367, -0.5312841 , -0.89983895,  1.36217503,  1.33078862,
+        -0.39278683, -0.79827225, -0.08874162, -0.03543326, -0.40357499,
+        -1.15311752,  1.23639392,  1.24208282, -0.45750018, -0.75743581,
+        -0.20978513, -0.02359646, -0.29908135, -1.08938309, -0.24900951,
+         0.84963214,  0.54856067, -0.5056698 , -0.19600752],
+       [ 0.        , -0.33501649, -1.09493684, -1.84474239,  0.7353655 ,
+         1.09767273, -0.40972392, -0.12502292, -0.05907756, -0.62400926,
+        -1.36206201,  1.01110394,  0.98730398,  0.96246672, -0.51499146,
+        -0.13043338, -0.04462507, -0.72764628, -0.33452463,  1.03554312,
+         0.14610585,  1.32249658, -0.54880546, -0.11422184, -0.03337973,
+        -0.78510524, -1.30708431, -0.47971864,  0.8248106 ,  0.58739082,
+        -0.62889588, -0.04723238,  0.        , -0.38496671,  0.05263019,
+         0.6268446 ,  0.79206232, -1.31947511, -0.82269451,  0.        ,
+        -0.06134367,  2.48785073,  1.39509519,  1.36217503, -0.42702619,
+        -1.44653841, -0.79827225, -0.08874162, -0.03543326,  1.31496589,
+         0.97343907,  1.23639392,  1.24208282,  0.37175927,  0.25922997,
+        -0.20978513, -0.02359646, -0.29908135, -1.08938309, -2.07821787,
+        -0.16403733,  1.56568555,  1.6951369 , -0.19600752],
+       [ 0.        , -0.33501649,  0.37766131,  0.74491906,  0.26875116,
+        -0.84412939, -0.40972392, -0.12502292, -0.05907756,  1.87969075,
+         0.4829745 , -1.50371099,  0.98730398, -0.69007742, -0.51499146,
+        -0.13043338, -0.04462507, -0.16825361, -1.5649297 ,  1.03554312,
+         0.9559523 , -1.25998248, -0.54880546, -0.11422184, -0.03337973,
+        -0.78510524, -1.14554164,  1.05055544,  0.17444436, -1.11591934,
+        -0.62889588, -0.04723238,  0.        , -0.67237227, -1.21260656,
+        -1.28805509,  0.28631697,  0.554775  , -0.53991295,  0.        ,
+        -0.06134367, -0.5312841 , -1.05283456, -1.12245711, -1.06623158,
+         0.30971422,  1.04941119, -0.08874162, -0.03543326, -0.40357499,
+         0.08737382, -1.06004006, -0.83316451,  0.86931494,  1.0725626 ,
+        -0.20978513, -0.02359646, -0.29908135,  0.28273565,  0.20829258,
+         0.24143046,  0.37903986, -0.5056698 , -0.19600752],
+       [ 0.        , -0.33501649, -1.09493684, -2.5510137 , -0.19786317,
+        -1.02065685, -0.40972392, -0.12502292, -0.05907756, -0.62400926,
+        -1.91557297, -1.25222949, -0.4767178 , -1.35109507, -0.51499146,
+        -0.13043338, -0.04462507, -0.72764628, -1.5649297 ,  1.03554312,
+        -0.17783273, -0.9371726 ,  0.06488677, -0.11422184, -0.03337973,
+        -0.78510524, -0.33782826,  1.05055544, -1.61406277,  0.24672879,
+         1.54181413, -0.04723238,  0.        ,  0.76465553,  1.31786694,
+         0.14811967, -1.73666443,  1.23632049,  0.8739949 ,  0.        ,
+        -0.06134367,  0.8105536 ,  1.24209958,  1.36217503,  0.85138458,
+         1.36346581, -0.56731182, -0.08874162, -0.03543326, -0.40357499,
+        -1.33033057, -1.25140956,  1.05342397,  0.20590738, -0.75743581,
+        -0.20978513, -0.02359646, -0.29908135, -1.08938309, -2.30686892,
+         0.84963214, -0.46856421, -0.5056698 , -0.19600752]])
+</code></pre>
+<h2 id="finding-the-covariance-matrix">Finding the Covariance Matrix</h2>
+<p>Covariance can only be calculated between two variables. The covariance matrix represent covariance values for each pair of values. However, something to note is that the coavariance between the same values is the variance. The values in the covariance matrix show the distribution magnitude and direction of multivariate data in multidimensional space. This tells us how data spread among two dimensions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">features <span style="color:#f92672">=</span> X_scaled<span style="color:#f92672">.</span>T
+cov_matrix <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>cov(features)
+cov_matrix[:<span style="color:#ae81ff">5</span>]
+</code></pre></div><pre><code>array([[ 0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        ],
+       [ 0.        ,  1.00055679,  0.55692803,  0.20792922, -0.01877095,
+         0.06080956,  0.04841462, -0.03894823,  0.03233761,  0.55668226,
+         0.22464686, -0.1091169 ,  0.02792345, -0.06401871, -0.02998976,
+        -0.04372166, -0.00511218,  0.21370474, -0.11364442, -0.10594116,
+         0.09630713, -0.17016456, -0.13140309, -0.03828751, -0.01118899,
+        -0.08595901, -0.1464647 ,  0.07302136,  0.04110577, -0.20643309,
+        -0.15083841, -0.01583244,  0.        , -0.16838934, -0.1785873 ,
+         0.04416401, -0.05989151, -0.23590747, -0.17334176,  0.        ,
+        -0.02056258, -0.12433589, -0.14307857,  0.02425596, -0.05474693,
+        -0.16336263, -0.08651441, -0.02575047, -0.01187734,  0.22590098,
+         0.11534522,  0.02039323,  0.03147217, -0.00958474,  0.03097025,
+        -0.04536753, -0.0079096 ,  0.85608624,  0.55603593,  0.14772819,
+        -0.10240636, -0.02988686,  0.02656195, -0.04391324],
+       [ 0.        ,  0.55692803,  1.00055679,  0.56049216, -0.08428213,
+         0.04359329,  0.00284248, -0.0623127 ,  0.02232373,  0.58258278,
+         0.63181885, -0.2861855 ,  0.0288144 ,  0.06328286, -0.0892706 ,
+        -0.10058163, -0.01695245,  0.27901931, -0.0842979 , -0.31089887,
+         0.2088427 , -0.0866784 , -0.21777823, -0.11899118, -0.03656904,
+        -0.15318486, -0.31069147,  0.10843848,  0.19987255, -0.19386672,
+        -0.19218825, -0.05174527,  0.        , -0.34425274, -0.39665192,
+        -0.05574592, -0.12045364, -0.27994538, -0.18342314,  0.        ,
+        -0.06720484, -0.26887784, -0.34213396, -0.15755721, -0.2033599 ,
+        -0.19008176, -0.06925396, -0.0648181 , -0.03881879,  0.20591063,
+         0.26232199, -0.04255483, -0.05155909,  0.08291101,  0.05087714,
+        -0.0038058 , -0.02585102,  0.5155632 ,  0.93814468,  0.50011815,
+        -0.13482895, -0.04120565,  0.07263924,  0.08256908],
+       [ 0.        ,  0.20792922,  0.56049216,  1.00055679,  0.02395166,
+        -0.17147274, -0.11579643, -0.04016165,  0.0356829 ,  0.32852685,
+         0.59681183, -0.00244183, -0.06866417,  0.02317556, -0.17890329,
+        -0.11389379,  0.02274892,  0.18791592,  0.04053848, -0.3606402 ,
+         0.06798035, -0.01832497, -0.22501771, -0.14984138, -0.00264061,
+        -0.10932133, -0.25643551, -0.05713961,  0.09022793, -0.18335945,
+        -0.14185335, -0.06770991,  0.        , -0.22758203, -0.22450237,
+         0.0176162 , -0.07800676, -0.22661869, -0.03724404,  0.        ,
+        -0.09967959, -0.25797925, -0.10225984, -0.02531625, -0.2439647 ,
+        -0.21486366,  0.08975313,  0.04694502, -0.06283349,  0.01545577,
+         0.29992877,  0.27957583, -0.18063179,  0.02240883,  0.13947453,
+         0.07537647, -0.04911189,  0.17590196,  0.56063763,  0.76837271,
+        -0.06599346, -0.0549664 ,  0.0534671 ,  0.08201622],
+       [ 0.        , -0.01877095, -0.08428213,  0.02395166,  1.00055679,
+         0.50801362,  0.12783499,  0.01007036,  0.0420887 ,  0.05168589,
+         0.01400599, -0.13579013,  0.16035772,  0.39025185,  0.13369898,
+         0.0145134 ,  0.00991629,  0.03663247, -0.1245208 , -0.15558711,
+        -0.0290413 ,  0.18277306,  0.07837646,  0.02390031,  0.00897584,
+         0.02705813, -0.0632296 ,  0.03625091,  0.08970406,  0.12261594,
+         0.07810046,  0.01270083,  0.        , -0.02808825, -0.01567262,
+         0.0266082 ,  0.06995417,  0.08913553,  0.05143686,  0.        ,
+         0.0236553 , -0.01837382, -0.09520698, -0.03759611,  0.0517417 ,
+         0.07461595, -0.09017068, -0.03955236,  0.02416211, -0.02058835,
+        -0.1656934 , -0.04367312,  0.03033136, -0.12062782, -0.26511602,
+        -0.21233856,  0.01736168, -0.04724951, -0.02018673, -0.00887196,
+        -0.08217086, -0.21592887, -0.25083833, -0.21546909]])
+</code></pre>
+<h2 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h2>
+<p>The Eigenvalues represent the magnitude of the spread in the direction of the principal components in PCA. The Eigenvectors show the direction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">values, vectors <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>eig(cov_matrix)
+values[:<span style="color:#ae81ff">5</span>]
+</code></pre></div><pre><code>array([7.34477606, 5.83549054, 5.15396118, 3.96623597, 2.9663452 ])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">explained_variances <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(values)):
+    explained_variances<span style="color:#f92672">.</span>append(values[i] <span style="color:#f92672">/</span> np<span style="color:#f92672">.</span>sum(values))
+ 
+print(np<span style="color:#f92672">.</span>sum(explained_variances), <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, explained_variances)
+</code></pre></div><pre><code>1.0 
+ [0.12033916097734873, 0.09561054403097907, 0.08444414892624542, 0.0649840790752414, 0.048601548759663986, 0.042141198692719296, 0.03942082803567363, 0.033893809246383313, 0.02998221011625234, 0.029320025512522108, 0.027818054635503204, 0.02577055092581997, 0.022753033157642488, 0.022271797395143574, 0.02165229431849244, 0.019141666064421373, 0.017755470851681988, 0.016380692742844292, 0.015964601688623483, 0.014891911870878283, 0.013479695658179398, 0.012719313702347617, 0.011658373505919556, 0.01057646598536323, 0.009753159471981125, 0.009445589897320018, 0.00863013826970722, 0.008366428536685152, 0.0079769324841124, 0.0074647137092606446, 0.007255821513702758, 0.006919112454811786, 0.0065390853557261925, 0.006407925738459838, 0.005913841117223457, 0.005711624052235263, 0.00523636803416639, 0.004818075864451424, 0.0008253509448180401, 0.004537192598584512, 0.001036957301557177, 0.004231627532327812, 0.004060530699790402, 0.003970848082758279, 0.0012510074249730283, 0.0013511841133708503, 0.001477626941060867, 0.0016123606225673516, 0.0016794638749558206, 0.001833184991971847, 0.0019551242601981867, 0.002035976345253763, 0.0021825685771200837, 0.0023448300553563584, 0.003564933031426161, 0.00259174940881465, 0.002764892635235471, 0.0034078718147030024, 0.0028857529410893502, 0.003278353352879537, 0.003110320073453571, 0.0, 0.0, 0.0]
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">projected_1 <span style="color:#f92672">=</span> X_scaled<span style="color:#f92672">.</span>dot(vectors<span style="color:#f92672">.</span>T[<span style="color:#ae81ff">0</span>])
+projected_2 <span style="color:#f92672">=</span> X_scaled<span style="color:#f92672">.</span>dot(vectors<span style="color:#f92672">.</span>T[<span style="color:#ae81ff">1</span>])
+res <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(projected_1, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;PC1&#39;</span>])
+res[<span style="color:#e6db74">&#39;PC2&#39;</span>] <span style="color:#f92672">=</span> projected_2
+res[<span style="color:#e6db74">&#39;Y&#39;</span>] <span style="color:#f92672">=</span> digits<span style="color:#f92672">.</span>target
+res
+</code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<h2 id="plotting-the-data">Plotting the Data</h2>
+<h3 id="one-dimensional">One-Dimensional</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">10</span>))
+sns<span style="color:#f92672">.</span>scatterplot(res[<span style="color:#e6db74">&#39;PC1&#39;</span>], [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> len(res), hue<span style="color:#f92672">=</span>res[<span style="color:#e6db74">&#39;Y&#39;</span>], s<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>)
+</code></pre></div><pre><code>C:\Users\benja\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+
+
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x1d13ab0dc40&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_21_2.png" alt="png"></p>
+<h3 id="two-dimensional">Two-Dimensional</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">10</span>))
+sns<span style="color:#f92672">.</span>scatterplot(res[<span style="color:#e6db74">&#39;PC1&#39;</span>], res[<span style="color:#e6db74">&#39;PC2&#39;</span>], hue<span style="color:#f92672">=</span>res[<span style="color:#e6db74">&#39;Y&#39;</span>], s<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>)
+</code></pre></div><pre><code>C:\Users\benja\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+
+
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x1d1757ec460&gt;
+</code></pre>
+<p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_23_2.png" alt="png"></p>
+<h3 id="clustering">Clustering</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+<span style="color:#f92672">from</span> sklearn <span style="color:#f92672">import</span> metrics
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+<span style="color:#f92672">from</span> sklearn.cluster <span style="color:#f92672">import</span> KMeans
+<span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
+<span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">res
+df <span style="color:#f92672">=</span> res<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#39;Y&#39;</span>], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+df
+</code></pre></div><!-- raw HTML omitted -->
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>to_numpy()
+X
+</code></pre></div><pre><code>array([[-1.91421366,  0.95450157],
+       [-0.58898033, -0.9246358 ],
+       [-1.30203906,  0.31718883],
+       ...,
+       [-1.02259599,  0.14791087],
+       [-1.07605522,  0.38090625],
+       [ 1.25770233,  2.22759088]])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">distortions <span style="color:#f92672">=</span> []
+K <span style="color:#f92672">=</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">20</span>)
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> K:
+    kmeanModel <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span>k)
+    kmeanModel<span style="color:#f92672">.</span>fit(X)
+    distortions<span style="color:#f92672">.</span>append(kmeanModel<span style="color:#f92672">.</span>inertia_)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">8</span>))
+plt<span style="color:#f92672">.</span>plot(K, distortions, <span style="color:#e6db74">&#39;bx-&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;k&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Distortion&#39;</span>)
+plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;The Elbow Method showing the optimal k&#39;</span>)
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_28_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">kmeans <span style="color:#f92672">=</span> KMeans(n_clusters<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>fit(X)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">label <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>fit_predict(res)
+u_labels <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>unique(label)
+centroids <span style="color:#f92672">=</span> kmeans<span style="color:#f92672">.</span>cluster_centers_
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> u_labels:
+    plt<span style="color:#f92672">.</span>scatter(X[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">0</span>] , X[label <span style="color:#f92672">==</span> i , <span style="color:#ae81ff">1</span>] , label <span style="color:#f92672">=</span> i)
+plt<span style="color:#f92672">.</span>scatter(centroids[:,<span style="color:#ae81ff">0</span>] , centroids[:,<span style="color:#ae81ff">1</span>] , s <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>)
+plt<span style="color:#f92672">.</span>legend()
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="https://benjamenu.github.io/Ben_Portfolio/images/project4/output_30_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">error <span style="color:#f92672">=</span> metrics<span style="color:#f92672">.</span>adjusted_rand_score(digits<span style="color:#f92672">.</span>target, kmeans<span style="color:#f92672">.</span>labels_)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Similarity of Clusters: </span><span style="color:#e6db74">{</span>error <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#39;</span>)
+</code></pre></div><pre><code>Similarity of Clusters: 62.13%
+</code></pre>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://benjamenu.github.io/Ben_Portfolio/" >
+    &copy;  Benjamen Underwood 2021 
+  </a>
+    <div>
+
+
+
+
+
+
+
+<a href="https://www.linkedin.com/in/benjamen-underwood-6309b1b8/" target="_blank" class="link-transition linkedin link dib z-999 pt3 pt0-l mr1" title="LinkedIn link" rel="noopener" aria-label="follow on LinkedIn——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+<a href="https://github.com/benjamenu" target="_blank" class="link-transition github link dib z-999 pt3 pt0-l mr1" title="Github link" rel="noopener" aria-label="follow on Github——Opens in a new window">
+  <svg  height="32px"  style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+  <path d="M256,32C132.3,32,32,134.8,32,261.7c0,101.5,64.2,187.5,153.2,217.9c11.2,2.1,15.3-5,15.3-11.1   c0-5.5-0.2-19.9-0.3-39.1c-62.3,13.9-75.5-30.8-75.5-30.8c-10.2-26.5-24.9-33.6-24.9-33.6c-20.3-14.3,1.5-14,1.5-14   c22.5,1.6,34.3,23.7,34.3,23.7c20,35.1,52.4,25,65.2,19.1c2-14.8,7.8-25,14.2-30.7c-49.7-5.8-102-25.5-102-113.5   c0-25.1,8.7-45.6,23-61.6c-2.3-5.8-10-29.2,2.2-60.8c0,0,18.8-6.2,61.6,23.5c17.9-5.1,37-7.6,56.1-7.7c19,0.1,38.2,2.6,56.1,7.7   c42.8-29.7,61.5-23.5,61.5-23.5c12.2,31.6,4.5,55,2.2,60.8c14.3,16.1,23,36.6,23,61.6c0,88.2-52.4,107.6-102.3,113.3   c8,7.1,15.2,21.1,15.2,42.5c0,30.7-0.3,55.5-0.3,63c0,6.1,4,13.3,15.4,11C415.9,449.1,480,363.1,480,261.7   C480,134.8,379.7,32,256,32z"/>
+</svg>
+
+<span class="new-window"><svg  height="8px"  style="enable-background:new 0 0 1000 1000;" version="1.1" viewBox="0 0 1000 1000" width="8px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+</span></a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="https://benjamenu.github.io/Ben_Portfolio/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

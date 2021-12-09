@@ -8,9 +8,19 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 08 Dec 2021 11:00:59 -0400</lastBuildDate><atom:link href="https://benjamenu.github.io/Ben_Portfolio/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Project 4: Implementing PCA from Scratch and testing by running PCA through K-Means Clustering Algorithm</title>
+      <link>https://benjamenu.github.io/Ben_Portfolio/post/project-4/</link>
+      <pubDate>Wed, 08 Dec 2021 11:00:59 -0400</pubDate>
+      
+      <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-4/</guid>
+      <description>PCA Extension for Dimensionality Reduction Imports needed from sklearn.datasets import load_digits from sklearn.preprocessing import StandardScaler import matplotlib.pyplot as plt import numpy as np import pandas as pd import seaborn as sns from jupyterthemes import jtplot jtplot.style() The dataset that was used for this extension comes from the sklearn load_digits package. Below you can visualize the different handwritten images in the package.
+digits = load_digits() plt.gray() plt.figure(figsize = (3, 5)) plt.matshow(digits.images[0], fignum = 1) plt.</description>
+    </item>
+    
+    <item>
       <title>Project 3: Audio Clustering using Non-Negative Matrix Factorization</title>
       <link>https://benjamenu.github.io/Ben_Portfolio/post/project-3/</link>
-      <pubDate>Wed, 08 Dec 2021 11:00:59 -0400</pubDate>
+      <pubDate>Tue, 07 Dec 2021 11:00:59 -0400</pubDate>
       
       <guid>https://benjamenu.github.io/Ben_Portfolio/post/project-3/</guid>
       <description>Visualizing and Clustering Audio By: Benjamen Underwood
